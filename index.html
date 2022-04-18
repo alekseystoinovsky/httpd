@@ -1,179 +1,862 @@
-
-
-Sample ex180 CloudGuru
-
-
-
-Run and Manage Containers
-Task 1.
-
-    Configure Podman to search the registry registry-1:5000 last.
-
-    Configure the registry as an insecure registry.
-
-Task 2.
-
-    Pull the latest Nginx image docker.io/library/nginx.
-
-    Start a container using the Nginx image with the following:
-
-        Name = web-vol
-
-        Mount local directory /home/cloud_user/web to container as /usr/share/nginx/html
-
-        Run the container in the pod named task-2 by using the podman option --pod task-2
-
-    Verify you can access the web page by using curl localhost:8081.
-
-    Save a copy of the container logs to a file named web-vol.log.
-
-Task 3.
-
-    Pull the latest MySQL image docker.io/library/mysql.
-
-    Start a container using the MySQL image with the following:
-
-        name=mysql-llama
-
-        MYSQL_PASSWORD=badpass
-
-        MYSQL_USER=guru
-
-        MYSQL_ROOT_PASSWORD=supersecret
-
-        Publish port 3306 on the container to port 3306 on the localhost
-
-    Verify the MySQL instance is running with the following command, and check that the llama database is there:
-
-        echo "show databases;" | mysql -uguru -pbadpass --protocol tcp -h localhost
-
-    Make a directory named mysql_logs and copy the log file /var/lib/mysql/mysql/general_log_213.sdi to the directory.
-
-Task 4.
-
-    Start a Nginx container from registry-1:5000 using a tag that is NOT latest. Use the following parameters:
-
-        name=web-default
-
-        Publish port 80 in the container to localhost port 8080
-
-    Verify you can access the web page with curl localhost:8080.
-
-    Start a Bash shell on the container and modify /usr/share/nginx/html/index.html in the container, then change the current message to A guru was here!.
-
-    Verify you can access the web page with curl localhost:8080 and see your new message.
-
-    Commit the modified container to a new image named registry-1:5000/nginx:web-guru.
-
-
-
-
-
-Build and Run Custom Images
-Task 5.
-
-    Push your new image to registry-1:5000.
-
-    Stop the container web-default and start a new container using your new image. Use the following parameters: - name=web-guru - Publish port 80 in the container to localhost port 8080
-
-    Verify you get your custom message with curl localhost:8080.
-
-    Save your new image as a tar file named guru-web.tar.
-
-Task 6.
-
-    Complete the incomplete Dockerfile located at /home/cloud_user/docker/Dockerfile. Details are listed in the incomplete Dockerfile.
-
-Task 7.
-
-    Build an image from the completed Dockerfile in task 6. The image should be built with the following:
-
-        name=llama-cart
-
-        tag=v1
-
-    Start a container with the new image using the following settings:
-
-        name=llama=web
-
-        Publish port 90 in the container to localhost port 8090
-
-    Verify the image works by putting your lab-system-name:8090 or IP-Address:8090 into a web browser.
-
-        Alternatively, use curl localhost:8090 and see just the text version of the page.
-
-
-
-
-
-Creating Applications with OpenShift
-Task 8.
-
-    Create a new project.
-
-        (CodeReady Containers only)
-
-            Create a new project named guru-php with display name of Test hello guru project
-
-        (Red Hat OpenShift Sandbox)
-
-            Skip this and use default project username-dev
-
-    Create a new PHP application with the following:
-
-        Git repo
-
-        Use the Git repo context directory php-hello-world
-
-        Create app as a deployment config
-
-        Label app=hello-guru
-
-Task 9.
-
-    Create a new project.
-
-        (CodeReady Containers only)
-
-            Create a new project named inventory
-
-        (Red Hat OpenShift Sandbox)
-
-            Skip this and use default project username-stage
-
-    Download the following template:
-
-        OpenShift Template
-
-    Publish the template to the current project.
-
-    Process the template and save to a file named processed_template.yaml. Set the following parameters and label:
-
-        NAME=fruit-stand
-
-        DATABASE_NAME=fruit_stand
-
-        DATABASE_USER=guru
-
-        DATABASE_PASSWORD=badpass
-
-        DATABASE_ADMIN_PASSWORD=badidea
-
-        label app=guru-fruit
-
-    Create the application using the saved file processed_template.yaml.
-
-Task 10.
-
-    Create the following directories inside your home directory:
-
-        logs/pod-fruit-stand
-
-        logs/pod-postgres
-
-    Sync the directory /var/log from each running pod to previously created directories.
-
-        Put the logs from the fruit-stand application pod in logs/pod-fruit-stand
-
-        Put the logs from the postgresql application pod in logs/pod-postgres
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 7.0.6.2 (Linux)"/>
+	<meta name="created" content="2022-04-01T20:31:20.748496597"/>
+	<meta name="changed" content="2022-04-03T02:02:50.906807865"/>
+	<style type="text/css">
+		@page { size: 8.5in 11in; margin: 0.79in }
+		p { margin-bottom: 0.1in; background: transparent; line-height: 115%; background: transparent }
+		h4 { margin-top: 0.08in; margin-bottom: 0.08in; background: transparent; background: transparent; page-break-after: avoid }
+		h4.western { font-family: "Liberation Serif", serif; font-size: 12pt; font-weight: bold }
+		h4.cjk { font-family: "Source Han Serif CN"; font-size: 12pt; font-weight: bold }
+		h4.ctl { font-family: "Droid Sans Devanagari"; font-size: 12pt; font-weight: bold }
+		h3 { margin-top: 0.1in; margin-bottom: 0.08in; background: transparent; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Serif", serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "Source Han Serif CN"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Droid Sans Devanagari"; font-size: 14pt; font-weight: bold }
+		h1 { margin-bottom: 0.08in; background: transparent; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
+		h1.cjk { font-family: "Source Han Sans CN"; font-size: 18pt; font-weight: bold }
+		h1.ctl { font-family: "Droid Sans Devanagari"; font-size: 18pt; font-weight: bold }
+		h2 { margin-top: 0.14in; margin-bottom: 0.08in; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Sans", sans-serif; font-size: 16pt; font-weight: bold }
+		h2.cjk { font-family: "Source Han Sans CN"; font-size: 16pt; font-weight: bold }
+		h2.ctl { font-family: "Droid Sans Devanagari"; font-size: 16pt; font-weight: bold }
+		code { font-family: "Liberation Mono", monospace }
+		strong { font-weight: bold }
+		em { font-style: italic }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><p align="center" style="margin-top: 0.17in; margin-bottom: 0.08in; line-height: 100%; page-break-after: avoid">
+<font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><b>Creating
+containerized web server</b></font></font></p>
+<p><br/>
+<br/>
+
+</p>
+<p>In this scenario, a client has asked you to set up a small NGINX
+web server running in a container. The client has provided you with a
+system that has Podman installed. 
+</p>
+<p>However, no container images are on the system, and no containers
+are running on it. An NGINX container image will need to be
+downloaded and a container started using that image. 
+</p>
+<p>Port 8080 on the local host should be exposed to port 80 on the
+container. In the end, you will have a working containerized web
+server that can be accessed via port 8080 on the server.</p>
+<p style="margin-bottom: 0in"><br/>
+
+</p>
+<h1 class="western">Learning Objectives</h1>
+<p style="margin-bottom: 0in">0 of 3 completed</p>
+<p style="margin-bottom: 0in"><br/>
+
+</p>
+<h3 class="western">Search for and Pull the NGINX Container Image</h3>
+<ul>
+	<li><p>First, you will need to find the official NGINX container
+	image to use for the container.</p>
+</ul>
+<h3 class="western">Run a Container Using the NGINX Container Image</h3>
+<ul>
+	<li><p>Run a container using the NGINX container image. The
+	container should have port 80 exposed to port 8080 on the local
+	host.</p>
+</ul>
+<h3 class="western">Verify the New Container Is Working</h3>
+<ul>
+	<li><p>Verify that the web server running in the container can be
+	reached on the local host port 8080.</p>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<p align="center" style="margin-top: 0.17in; margin-bottom: 0.08in; line-height: 100%; page-break-before: always; page-break-after: avoid">
+<br/>
+<br/>
+
+</p>
+<p align="center" style="margin-top: 0.17in; margin-bottom: 0.08in; line-height: 100%; page-break-after: avoid">
+<font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><b>Creating
+a Persistent Container Volume</b></font></font></p>
+<p><br/>
+<br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%">In this scenario,
+one of your clients has requested you to set up 2 MySQL container
+instances. They have provided the following guidelines as part of the
+request. 
+</p>
+<p style="margin-bottom: 0in; line-height: 100%">The client has also
+informed you that they do have SELinux enforced in their environment,
+so be sure to take that into account when starting the containers. 
+</p>
+<p style="margin-bottom: 0in; line-height: 100%">1.) Use the
+`docker.io/library/mysql` container image.</p>
+<p style="margin-bottom: 0in; line-height: 100%">2.) Name the
+containers `mysql-1` and `mysql-2`. Expose port `3306` on `mysql-1`
+to `33061` on the localhost, and port `3306` on `mysql-2` to `33062`
+on the localhost.</p>
+<p style="margin-bottom: 0in; line-height: 100%">3.) Create and share
+a directory named `db_dir` to `mysql-1` as `/var/lib/mysql`.</p>
+<p style="margin-bottom: 0in; line-height: 100%">4.) Create a new
+Podman volume named `db_vol` and share this volume to `mysql-2` as
+`/var/lib/mysql`.</p>
+<p style="margin-bottom: 0in; line-height: 100%">5.) Set
+`MYSQL_ROOT_PASSWORD` to `changeme`.</p>
+<p><br/>
+<br/>
+
+</p>
+<p><br/>
+<br/>
+
+</p>
+<h3 class="western">Pull the Requested Container Image</h3>
+<ul>
+	<li><p>Pull the <code>docker.io/library/mysql</code> container image
+	from the repository to the local system.</p>
+</ul>
+<h3 class="western">Start the First MySQL Container</h3>
+<ul>
+	<li><p>Start the first MySQL container using the pulled image. The
+	container should be started with a shared directory from the host
+	system. The container should be configured with the following:</p>
+</ul>
+<p>a) Use a shared directory from the host. The directory name should
+be <code>db_dir</code> and map to the container as <code>/var/lib/mysql</code>.</p>
+<p>b) Expose container port <code>3306</code> to localhost port
+<code>33061</code>.</p>
+<p>c) Set <code>MYSQL_ROOT_PASSWORD</code> to <code>changeme</code>.</p>
+<h3 class="western">Start the Second MySQL Container</h3>
+<ul>
+	<li><p>Start the second MySQL container using the pulled image. The
+	container should be started with a Podman-managed volume. The
+	container should be configured with the following:</p>
+</ul>
+<p>a) Create a Podman volume named <code>db_vol</code> and map this
+to the container as <code>/var/lib/mysql/</code>.</p>
+<p>b) Expose container port <code>3306</code> to localhost port
+<code>33062</code>.</p>
+<p>c) Set <code>MYSQL_ROOT_PASSWORD</code> to <code>changeme</code>.</p>
+<h3 class="western">Verify the Containers and MySQL Are Running</h3>
+<ul>
+	<li><p>Verify that the containers and MySQL service started properly
+	and the MySQL files are being stored in the persistent storage.</p>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<p><br/>
+<br/>
+
+</p>
+<p align="center" style="margin-top: 0.17in; margin-bottom: 0.08in; line-height: 100%; page-break-after: avoid">
+<font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><b>Working
+with Image Registries</b></font></font></p>
+<p><br/>
+<br/>
+
+</p>
+<p>In this scenario, a client has a server hosting 2 local
+registries. One is <code>localhost port 5000</code> and the other is
+<code>localhost port 5001</code>.</p>
+<p>The client has requested that you configure the server to add
+these registries to the configuration for Podman. The system should
+be configured to search the local registry on port 5000 first, the
+one on port 5001 second, and the default registries after that.</p>
+<p>In addition, the client would also like the registry on port 5001
+added as an insecure registry.</p>
+<p>Lastly, as a favor to get them started, the client would like you
+to pull an image of <code>llama-web</code> from the local registry to
+the system. They request that you do not use the <code>latest</code>
+tag for the image.</p>
+<p style="margin-bottom: 0in"><br/>
+
+</p>
+<p style="margin-bottom: 0in"><br/>
+
+</p>
+<h3 class="western">Configure New Local Registries</h3>
+<ul>
+	<li><p>Configure Podman to use the 2 new registries running on the
+	local system. The registries are <code>localhost:5000</code> and
+	<code>localhost:5001</code>.</p>
+	<li><p>Configure the Insecure Registry</p>
+	<li><p>Configure Podman to use the registry <code>localhost:5001</code>
+	as an insecure registry.</p>
+</ul>
+<h3 class="western">Pull a Custom Image to the System</h3>
+<ul>
+	<li><p>Pull an image of <code>llama-web</code> that is NOT the
+	<code>latest</code> one.</p>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<p align="center" style="margin-top: 0.17in; margin-bottom: 0.08in; line-height: 100%; page-break-before: always; page-break-after: avoid">
+<font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><b>Tagging
+and Saving an Image</b></font></font></p>
+<p><br/>
+<br/>
+
+</p>
+<p>In this scenario, you have been approached by a client wanting you
+to help them with modifying, saving, and publishing a container
+image.</p>
+<p>They have an existing Nginx container running on a system. First,
+they want you to change the default web page in that container to say
+<code>Future Home of llama-rama enterprises</code>. This modified
+container should have the changes committed to a new image named
+<code>localhost:5000/llama-rama-web.</code></p>
+<p>The client would also like this new image to have a tag of <code>v1.0</code>.</p>
+<p>Next, the client would also like this new image saved to a .tar
+archive named <code>llama-rama-web.tar</code>. The new image also
+needs to be pushed to a local registry running on <code>port 5000</code>
+of the <code>localhost</code> so it can be used on other systems.</p>
+<p style="margin-bottom: 0in">Learning Objectives</p>
+<p style="margin-bottom: 0in">0 of 4 completed</p>
+<p>Modify the Existing Containers Default Web Page</p>
+<p>Modify the default web page in the <code>web-1</code> container to
+say <code>Future Home of llama-rama enterprises</code>.</p>
+<p>Commit the Changes to a New Image and Tag the Image</p>
+<p>The modified container should have the changes committed to a new
+image named <code>localhost:5000/llama-rama-web.</code> Tag the image
+as <code>v1.0</code>.</p>
+<p>Create a .tar Archive of the New Image</p>
+<p>Create a .tar archive of the image. The archive should be named
+<code>llama-rama-web.tar</code>.</p>
+<p>Publish the New Image to a Local Registry</p>
+<p>Publish the new image to the registry running on <code>localhost:5000</code>.</p>
+<p><br/>
+<br/>
+
+</p>
+<p style="page-break-before: always">Building a Custom Image Using
+Podman</p>
+<p><br/>
+<br/>
+
+</p>
+<p>In this lab scenario, you have been approached by the sales team
+that needs your help. They are making a pitch to a prospective client
+on how great containers are, and would like to show them how easily a
+container for their upcoming llama-cart-racing website can be set up.
+What they would like you to do is create a new image from a
+Dockerfile, and then run a container using the new image. They have
+requested the new image be based off of <strong>Red Hat Universal
+Base Image 8</strong> with the tag <code>8.4</code>, and named
+<code>llama-cart</code> and tagged <code>v1</code>.</p>
+<p>A draft Dockerfile with some instructions has been left on the
+system for you to use. Along with this, they have also provided a
+custom Nginx configuration zip file they would like you to use. That
+configuration will set Nginx to run on port 90.</p>
+<p>The content for the test website is also provided in a tar file.
+This file should be uncompressed in the image, and a compressed copy
+should be kept inside the image, as well.</p>
+<p>For the test demo, start a container called <code>llama-cart</code>
+based off this new image, and expose container port 90 to host port
+8090. Test that the new container and website are available in a
+browser.</p>
+<p>Good luck in helping the sales team win the deal with the
+prospective client.</p>
+<p style="margin-bottom: 0in">Learning Objectives</p>
+<p style="margin-bottom: 0in">0 of 3 completed</p>
+<p>Set Up a New Build Directory</p>
+<p>Create a new build directory. Then, copy the <code>Dockerfile</code>,
+along with any <code>.zip</code> and <code>.tar</code> files, from
+<code>/home/cloud_user</code> and add them to the build directory.</p>
+<p>Complete the Dockerfile</p>
+<p>Complete the <code>Dockerfile</code>. The following should be
+completed in the Dockerfile:</p>
+<ul>
+	<li><p style="margin-bottom: 0in">Start with the image
+	<code>registry.access.redhat.com/ubi8/ubi:8.4</code>.</p>
+	<li><p style="margin-bottom: 0in">Set yourself as the maintainer and
+	provide a description using <code>LABEL</code>.</p>
+	<li><p style="margin-bottom: 0in">Install <code>nginx</code> and
+	<code>unzip</code> packages into the image.</p>
+	<li><p style="margin-bottom: 0in">Set a variable named <code>PORT</code>
+	to a value of <code>90</code>.</p>
+	<li><p style="margin-bottom: 0in">Use the variable <code>PORT</code>
+	to expose port <code>90</code> in the image.</p>
+	<li><p style="margin-bottom: 0in">Import the file <code>nginx.zip</code>
+	to <code>/tmp</code>.</p>
+	<li><p style="margin-bottom: 0in">Unzip the <code>nginx.zip</code>
+	file to <code>/etc/nginx</code>.</p>
+	<li><p style="margin-bottom: 0in">Import and extract the file
+	<code>llama_cart.tar</code> to <code>/usr/share/nginx/html/</code>.</p>
+	<li><p style="margin-bottom: 0in">Import the file <code>llama_cart.tar</code>
+	to the working directory <code>/tar_file</code> without
+	uncompressing it.</p>
+	<li><p>#Set the container to start <code>nginx</code> with options
+	<code>&quot;-g&quot;</code> and <code>&quot;daemon off;&quot;</code>.
+	Make <code>&quot;-g&quot;</code> and <code>&quot;daemon off;&quot;</code>
+	overwritable by Podman run arguments.</p>
+</ul>
+<p><strong>Note:</strong> The draft <code>Dockerfile</code> also
+contains these notes presented as comments.</p>
+<p>Build and Test the New Image</p>
+<ul>
+	<li><p>Build the new container image with the following information:</p>
+	<ul>
+		<li><p style="margin-bottom: 0in">Name the image <code>llama-cart</code>.</p>
+		<li><p style="margin-bottom: 0in">Tag the image <code>v1</code>.</p>
+	</ul>
+	<li><p>Start a new container named <code>llama-cart</code> and
+	expose <code>port 90</code> in the container to <code>port 8090</code>
+	on the localhost.</p>
+	<li><p>Verify the website is available on <code>port 8090</code> of
+	the system using a web browser.</p>
+</ul>
+<p><br/>
+<br/>
+
+</p>
+<p style="page-break-before: always">Getting Acquainted with
+OpenShift</p>
+<p><br/>
+<br/>
+
+</p>
+<h3 class="western">Scenario</h3>
+<p>In this lab scenario, you have been approached by a client who
+would like you to test the basic functionality of their new
+development Red Hat OpenShift Container Platform. The client would
+like you to complete the following tasks:</p>
+<ul>
+	<li><p style="margin-bottom: 0in">Check the ability to log in to the
+	cluster using the command line and/or the web UI.</p>
+	<li><p style="margin-bottom: 0in">Get help for <code>oc</code> and,
+	in particular, the <code>delete</code> command.</p>
+	<li><p>View and get information about the resources running and
+	delete the route on their test application.</p>
+</ul>
+<ol>
+	<li><p style="margin-bottom: 0in">Here is the link to the script for
+	<em><strong><a href="https://github.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes/raw/main/oc-ruby-setup-crc.sh">resource
+	creation in CodeReady Containers</a></strong></em>.</p>
+	<li><p>Here is the link to the script for <em><strong><a href="https://github.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes/raw/main/oc-ruby-setup-rhsb.sh">resource
+	creation in Red Hat sandbox</a></strong></em>.</p>
+</ol>
+<p style="margin-bottom: 0in">Learning Objectives</p>
+<p style="margin-bottom: 0in">0 of 4 completed</p>
+<p>Log In to the Cluster</p>
+<p>Log in to the OpenShift cluster using <code>oc login</code> and/or
+the web UI.</p>
+<p>Get Help for the oc Command</p>
+<p>Get help for both the <code>oc</code> command and <code>oc delete</code>
+subcommand.</p>
+<p>View the Test Project Resources</p>
+<p>View the status of the project and get information about the
+various resources, like pods and routes.</p>
+<p>Delete the Route from the Test Project</p>
+<p>Delete the existing route resource from the test project.</p>
+<p><br/>
+<br/>
+
+</p>
+<p style="page-break-before: always">Creating an Openshift
+Application from an Image</p>
+<p><br/>
+<br/>
+
+</p>
+<h3 class="western">Scenario</h3>
+<p>In this lab scenario, you have been approached by a client who
+would like you to test the basic functionality of their new
+development Red Hat OpenShift Container Platform. The client would
+like you to complete the following tasks:</p>
+<ul>
+	<li><p style="margin-bottom: 0in">Create a project with the name
+	<em>test-db</em>. The display name should be <em>The first test
+	project</em>.</p>
+	<li><p style="margin-bottom: 0in">Create a new MySQL application in
+	the project with a name of <em>guru-mysql</em> and label all created
+	resources with <em>guru-test</em>. The MySQL database should be set
+	up with the following configuration: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in">The DB name should be <em>testdb</em>.</p>
+		<li><p style="margin-bottom: 0in">The MySQL root password set to
+		<em>rootpass</em>.</p>
+		<li><p style="margin-bottom: 0in">The MySQL user set to <em>guru</em>.</p>
+		<li><p style="margin-bottom: 0in">The MySQL user password set to
+		<em>badpass</em>.</p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Create a route by exposing the new
+	service.</p>
+	<li><p>Lastly, you will need to test that the new MySQL application
+	is available and the DB can be accessed.</p>
+</ul>
+<ul>
+	<li><p>Upon completion of the lab, you can clean up the resources by
+	running the following command: <code>oc delete
+	deployment.apps/guru-mysql service/guru-mysql
+	route.route.openshift.io/guru-mysql</code></p>
+</ul>
+<p>Good luck, and have fun, Gurus!</p>
+<p style="margin-bottom: 0in">Learning Objectives</p>
+<p style="margin-bottom: 0in">0 of 4 completed</p>
+<p>Create the New Project</p>
+<p>Create a new project with the name <em>test-db</em>. Make sure the
+display name is <em>The first test project</em>.</p>
+<p style="margin-left: 0.39in; margin-right: 0.39in"><strong>Note:</strong>
+This section only applies to local users of the OpenShift
+environment. Remote access users should skip this section.</p>
+<p>Create the New Application</p>
+<p>Create a new MySQL application in the project with the following
+configuration:</p>
+<ul>
+	<li><p style="margin-bottom: 0in">Name the app <em>guru-mysql</em>.</p>
+	<li><p style="margin-bottom: 0in">Set <code>MYSQL_DATABASE</code> to
+	<code>testdb</code>.</p>
+	<li><p style="margin-bottom: 0in">Set <code>MYSQL_ROOT_PASSWORD</code>
+	to <code>rootpass</code>.</p>
+	<li><p style="margin-bottom: 0in">Set <code>MYSQL_USER</code> to
+	<code>guru</code>.</p>
+	<li><p style="margin-bottom: 0in">Set <code>MYSQL_PASSWORD</code> to
+	<code>badpass</code>.</p>
+	<li><p>Label all the new resources with <code>app=guru-test</code>.</p>
+</ul>
+<p>Create a New Route by Exposing the Service 
+</p>
+<p>Create a new route for the application by exposing
+<code>service/guru-mysql</code>.</p>
+<p>Test the New Application Database</p>
+<p>Test that the new MySQL database is running and can be accessed on
+port <code>3306</code>.</p>
+<p><br/>
+<br/>
+
+</p>
+<p style="page-break-before: always">Creating an OpenShift
+Application from Source</p>
+<p><br/>
+<br/>
+
+</p>
+<h3 class="western">Scenario</h3>
+<p>In this scenario, you have been tasked with making sure that a
+simple Apache web page can be built from a Git repository using a new
+OpenShift cluster. The client would like you to complete the
+following tasks:</p>
+<ol>
+	<li><p style="margin-bottom: 0in">Create a project with the name
+	<code>llama-cart-test</code>. The display name should be <code>Llama
+	Cart Racing test</code>.</p>
+	<li><p style="margin-bottom: 0in">Create a new <code>http</code>
+	application in the project with the following configuration: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in">Uses the image stream <code>httpd</code>
+		to build the application.</p>
+		<li><p style="margin-bottom: 0in">Uses the client-provided <em><strong><a href="https://github.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes">Git
+		repository</a></strong></em> with the context directory <code>llama_cart</code>.</p>
+		<li><p style="margin-bottom: 0in">The application name should be
+		<code>llama-cart-racing</code>.</p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Label <code>app</code> resources
+	with <code>racing-test</code>.</p>
+	<li><p style="margin-bottom: 0in">Create a route by exposing the new
+	service.</p>
+	<li><p>Test that the new Apache application is available and the web
+	page can be accessed.</p>
+</ol>
+<p style="margin-bottom: 0in">Learning Objectives</p>
+<p style="margin-bottom: 0in">0 of 4 completed</p>
+<p>Create the New Project</p>
+<ol>
+	<li><p>Create a new project with the name <code>llama-cart-test</code>
+	and a display name of <code>Llama Cart Racing test</code>.</p>
+</ol>
+<p style="margin-left: 0.39in; margin-right: 0.39in">Note: This
+section only applies to local users of the OpenShift environment.
+Remote access users should skip this section.</p>
+<p>Create the New Application</p>
+<ol>
+	<li><p style="margin-bottom: 0in">Create a new application using the
+	<code>httpd</code> image stream and the Git repository
+	<code>https://github.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes/llama_cart</code>.</p>
+	<li><p style="margin-bottom: 0in">Name the application
+	<code>llama-cart-racing</code>.</p>
+	<li><p>Give all app resources the label <code>racing-test</code>.</p>
+</ol>
+<p>Create a New Route</p>
+<ol>
+	<li><p>Create a new route to the application by exposing the new
+	service.</p>
+</ol>
+<p>Test the Web Page</p>
+<ol>
+	<li><p>Make sure that the web page is accessible.</p>
+</ol>
+<p><br/>
+<br/>
+
+</p>
+<p style="page-break-before: always">Setting Up Multi-Container
+Applications in OpenShift</p>
+<p><br/>
+<br/>
+
+</p>
+<h3 class="western">Scenario</h3>
+<p>In this lab scenario, you have been approached by a client who
+would like you to test a new multi-container application template
+using their new development Red Hat OpenShift Container Platform. The
+client would like you to complete the following tasks:</p>
+<ol>
+	<li><p style="margin-bottom: 0in">Create a new project.</p>
+	<li><p style="margin-bottom: 0in">Download the template file from
+	this <em><strong><a href="https://raw.githubusercontent.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes/main/multi-container/multi_test.yaml">Git
+	repo</a></strong></em> and publish it to your new project.</p>
+	<li><p style="margin-bottom: 0in">Process the template with custom
+	parameters and use this to create the application.</p>
+	<li><p>Enter a test value into the web application to verify it is
+	working properly.</p>
+</ol>
+<p style="margin-bottom: 0in">Learning Objectives</p>
+<p style="margin-bottom: 0in">0 of 4 completed</p>
+<p>Log In to the Cluster and Create a New Project</p>
+<ol>
+	<li><p>Log in to the OpenShift cluster using <code>oc login</code>
+	and/or the web UI.</p>
+	<li><p>Create a new project called <code>multi-test</code> with a
+	display name of <code>Multi-Container Test</code> (skip if using Red
+	Hat OpenShift sandbox).</p>
+</ol>
+<p>Download the OpenShift Template and Publish It</p>
+<ol>
+	<li><p>Download the template file from this <em><strong><a href="https://raw.githubusercontent.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes/main/multi-container/multi_test.yaml">Git
+	repo (here)</a></strong></em> and save it as a file named
+	<code>multi_test.yaml</code>.</p>
+	<li><p>Publish this template to your local project.</p>
+</ol>
+<p>Process the Template and Create the Application</p>
+<ol>
+	<li><p>Process the template with the following custom parameters and
+	then create the application using the processed template.</p>
+</ol>
+<p><code>NAME=fruit-stand</code></p>
+<p><code>DATABASE_NAME=fruit_stand</code></p>
+<p><code>DATABASE_USER=guru</code></p>
+<p><code>DATABASE_PASSWORD=badpass</code></p>
+<p><code>DATABASE_ADMIN_PASSWORD=badidea</code></p>
+<p>Verify the Application Is Working</p>
+<ol>
+	<li><p>Open the application in a web browser and add a test entry
+	into the inventory page.</p>
+</ol>
+<p><br/>
+<br/>
+
+</p>
+<p style="page-break-before: always">Troubleshooting a Containerized
+Application</p>
+<p><br/>
+<br/>
+
+</p>
+<h3 class="western">Scenario</h3>
+<p>In this lab scenario, you have been approached by a client who
+would like you to troubleshoot a MySQL application that keeps failing
+in their OpenShift environment. The client would like you to complete
+the following tasks:</p>
+<ul>
+	<li><p style="margin-bottom: 0in">Create a project with the name
+	<code>bad-mysql</code>.</p>
+	<li><p style="margin-bottom: 0in">Replicate the issue with a new,
+	broken MySQL application in the project using the following command:
+		</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>oc new-app --name=secret-db
+		mysql mysql_root_pass=supersecret -l app=secret-db</code></p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Troubleshoot the failing
+	application by viewing the appropriate logs.</p>
+	<li><p style="margin-bottom: 0in">Resolve the issue and get the
+	application to start and stay running.</p>
+	<li><p>Lastly, you will need to test that the new MySQL application
+	is available and the DB can be accessed.</p>
+</ul>
+<p>Good luck, and have fun, Gurus!</p>
+<p style="margin-bottom: 0in">Learning Objectives</p>
+<p style="margin-bottom: 0in">0 of 4 completed</p>
+<p>Create the New Project</p>
+<p>Create a new project with the name <code>bad-mysql</code>.</p>
+<p style="margin-left: 0.39in; margin-right: 0.39in"><strong>Note:</strong>
+This section only applies to local users of the OpenShift
+environment. Remote access users should skip this section.</p>
+<p>Replicate the Issue with the Application</p>
+<p>Replicate the problem by creating a new MySQL application with the
+following command: <code>oc new-app --name=secret-db mysql
+mysql_root_pass=supersecret -l app=secret-db</code></p>
+<p>Troubleshoot and Fix the Application</p>
+<ul>
+	<li><p style="margin-bottom: 0in">Review the logs for the failing
+	application to find the issue.</p>
+	<li><p>Fix the issue that is causing the application to fail.</p>
+</ul>
+<p>Verify the Application Is Running</p>
+<p>Connect to the new application pod and verify the MySQL instance
+is working.</p>
+<p><br/>
+<br/>
+
+</p>
+<p align="center" style="margin-top: 0.17in; margin-bottom: 0.08in; line-height: 100%; page-break-before: always; page-break-after: avoid">
+<font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><b>Sample
+ex180 CloudGuru</b></font></font></p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0in; line-height: 100%"><br/>
+
+</p>
+<h2 class="western">Run and Manage Containers</h2>
+<h4 class="western">Task 1.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Configure <code>Podman</code> to
+	search the registry <code>registry-1:5000</code> last.</p>
+	<li><p>Configure the registry as an insecure registry.</p>
+</ol>
+<h4 class="western">Task 2.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Pull the latest Nginx image
+	<code>docker.io/library/nginx</code>.</p>
+	<li><p style="margin-bottom: 0in">Start a container using the Nginx
+	image with the following: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in">Name = <code>web-vol</code></p>
+		<li><p style="margin-bottom: 0in">Mount local directory
+		<code>/home/cloud_user/web</code> to container as
+		<code>/usr/share/nginx/html</code></p>
+		<li><p style="margin-bottom: 0in">Run the container in the pod
+		named <code>task-2</code> by using the podman option <code>--pod
+		task-2</code></p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Verify you can access the web page
+	by using <code>curl localhost:8081</code>.</p>
+	<li><p>Save a copy of the container logs to a file named
+	<code>web-vol.log</code>.</p>
+</ol>
+<h4 class="western">Task 3.</h4>
+<ol>
+	<li><p>Pull the latest MySQL image <code>docker.io/library/mysql</code>.</p>
+	<li><p>Start a container using the MySQL image with the following:</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>name=mysql-llama</code></p>
+		<li><p style="margin-bottom: 0in"><code>MYSQL_PASSWORD=badpass</code></p>
+		<li><p style="margin-bottom: 0in"><code>MYSQL_USER=guru</code></p>
+		<li><p style="margin-bottom: 0in"><code>MYSQL_ROOT_PASSWORD=supersecret</code></p>
+		<li><p style="margin-bottom: 0in">Publish port <code>3306</code> on
+		the container to port <code>3306</code> on the localhost</p>
+	</ul>
+	<li><p>Verify the MySQL instance is running with the following
+	command, and check that the llama database is there:</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>echo &quot;show databases;&quot;
+		| mysql -uguru -pbadpass --protocol tcp -h localhost</code></p>
+	</ul>
+	<li><p>Make a directory named <code>mysql_logs</code> and copy the
+	log file <code>/var/lib/mysql/mysql/general_log_213.sdi</code> to
+	the directory.</p>
+</ol>
+<h4 class="western">Task 4.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Start a Nginx container from
+	<code>registry-1:5000</code> using a tag that is <strong>NOT</strong>
+	<code>latest</code>. Use the following parameters: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>name=web-default</code></p>
+		<li><p style="margin-bottom: 0in">Publish port <code>80</code> in
+		the container to <code>localhost</code> port <code>8080</code></p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Verify you can access the web page
+	with <code>curl localhost:8080</code>.</p>
+	<li><p style="margin-bottom: 0in">Start a Bash shell on the
+	container and modify <code>/usr/share/nginx/html/index.html</code>
+	in the container, then change the current message to <code>A guru
+	was here!</code>.</p>
+	<li><p style="margin-bottom: 0in">Verify you can access the web page
+	with <code>curl localhost:8080</code> and see your new message.</p>
+	<li><p>Commit the modified container to a new image named
+	<code>registry-1:5000/nginx:web-guru</code>.</p>
+</ol>
+<h1 class="western"><br/>
+<br/>
+
+</h1>
+<p style="page-break-before: always"><br/>
+<br/>
+
+</p>
+<h2 class="western">Build and Run Custom Images</h2>
+<h4 class="western">Task 5.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Push your new image to
+	<code>registry-1:5000</code>.</p>
+	<li><p style="margin-bottom: 0in">Stop the container <code>web-default</code>
+	and start a new container using your new image. Use the following
+	parameters: - <code>name=web-guru</code> - Publish port <code>80</code>
+	in the container to <code>localhost</code> port <code>8080</code></p>
+	<li><p style="margin-bottom: 0in">Verify you get your custom message
+	with <code>curl localhost:8080</code>.</p>
+	<li><p>Save your new image as a tar file named <code>guru-web.tar</code>.</p>
+</ol>
+<h4 class="western">Task 6.</h4>
+<ol>
+	<li><p>Complete the incomplete Dockerfile located at
+	<code>/home/cloud_user/docker/Dockerfile</code>. Details are listed
+	in the <a href="https://github.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes/blob/main/Dockerfile_exam_lab">incomplete
+	Dockerfile</a>.</p>
+</ol>
+<h4 class="western">Task 7.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Build an image from the completed
+	Dockerfile in task 6. The image should be built with the following: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>name=llama-cart</code></p>
+		<li><p style="margin-bottom: 0in"><code>tag=v1</code></p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Start a container with the new
+	image using the following settings: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>name=llama=web</code></p>
+		<li><p style="margin-bottom: 0in">Publish port <code>90</code> in
+		the container to <code>localhost</code> port <code>8090</code></p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Verify the image works by putting
+	your <em>lab-system-name:8090</em> or <em>IP-Address:8090</em> into
+	a web browser. 
+	</p>
+	<ul>
+		<li><p>Alternatively, use <code>curl localhost:8090</code> and see
+		just the text version of the page.</p>
+	</ul>
+</ol>
+<p><br/>
+<br/>
+
+</p>
+<p><br/>
+<br/>
+
+</p>
+<h2 class="western" style="page-break-before: always">Creating
+Applications with OpenShift</h2>
+<h4 class="western">Task 8.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Create a new project. 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in">(<strong>CodeReady Containers
+		only</strong>) 
+		</p>
+		<ul>
+			<li><p style="margin-bottom: 0in">Create a new project named
+			<code>guru-php</code> with display name of <code>Test hello guru
+			project</code></p>
+		</ul>
+		<li><p style="margin-bottom: 0in">(<strong>Red Hat OpenShift
+		Sandbox</strong>) 
+		</p>
+		<ul>
+			<li><p style="margin-bottom: 0in">Skip this and use default
+			project <code>username-dev</code></p>
+		</ul>
+	</ul>
+	<li><p style="margin-bottom: 0in">Create a new PHP application with
+	the following: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><em><strong><a href="https://github.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes">Git
+		repo</a></strong></em></p>
+		<li><p style="margin-bottom: 0in">Use the Git repo context
+		directory <code>php-hello-world</code></p>
+		<li><p style="margin-bottom: 0in">Create app as a deployment config</p>
+		<li><p>Label <code>app=hello-guru</code></p>
+	</ul>
+</ol>
+<h4 class="western">Task 9.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Create a new project. 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in">(<strong>CodeReady Containers
+		only</strong>) 
+		</p>
+		<ul>
+			<li><p style="margin-bottom: 0in">Create a new project named
+			<code>inventory</code></p>
+		</ul>
+		<li><p style="margin-bottom: 0in">(<strong>Red Hat OpenShift
+		Sandbox</strong>) 
+		</p>
+		<ul>
+			<li><p style="margin-bottom: 0in">Skip this and use default
+			project <code>username-stage</code></p>
+		</ul>
+	</ul>
+	<li><p style="margin-bottom: 0in">Download the following template: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><em><strong><a href="https://raw.githubusercontent.com/linuxacademy/Red-Hat-Certified-Specialist-in-Containers-and-Kubernetes/main/multi-container/multi_test.yaml">OpenShift
+		Template</a></strong></em></p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Publish the template to the
+	current project.</p>
+	<li><p style="margin-bottom: 0in">Process the template and save to a
+	file named <code>processed_template.yaml</code>. Set the following
+	parameters and label: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>NAME=fruit-stand</code></p>
+		<li><p style="margin-bottom: 0in"><code>DATABASE_NAME=fruit_stand</code></p>
+		<li><p style="margin-bottom: 0in"><code>DATABASE_USER=guru</code></p>
+		<li><p style="margin-bottom: 0in"><code>DATABASE_PASSWORD=badpass</code></p>
+		<li><p style="margin-bottom: 0in"><code>DATABASE_ADMIN_PASSWORD=badidea</code></p>
+		<li><p style="margin-bottom: 0in"><code>label app=guru-fruit</code></p>
+	</ul>
+	<li><p>Create the application using the saved file
+	<code>processed_template.yaml</code>.</p>
+</ol>
+<h4 class="western">Task 10.</h4>
+<ol>
+	<li><p style="margin-bottom: 0in">Create the following directories
+	inside your home directory: 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in"><code>logs/pod-fruit-stand</code></p>
+		<li><p style="margin-bottom: 0in"><code>logs/pod-postgres</code></p>
+	</ul>
+	<li><p style="margin-bottom: 0in">Sync the directory <code>/var/log</code>
+	from each running pod to previously created directories. 
+	</p>
+	<ul>
+		<li><p style="margin-bottom: 0in">Put the logs from the fruit-stand
+		application pod in <code>logs/pod-fruit-stand</code></p>
+		<li><p>Put the logs from the postgresql application pod in
+		<code>logs/pod-postgres</code></p>
+	</ul>
+</ol>
+</body>
+</html>
